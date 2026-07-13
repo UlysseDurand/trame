@@ -185,12 +185,11 @@ function toggleSortDir() {
           {{ r.description || '—' }}
         </td>
         <td>
-          <div v-for="tag in getDisplayableTagsForRepo(r.topics)" :key="tag.key">
-            <a :href="tag.key === '...' ? '' : 'https://github.com/topics/' + tag.githubTopic">
-              <span :class="['pill', 'topic', activeTopics.has(tag.key) && 'active']">
-                  {{ tag.label }}
-              </span>
-            </a>        
+          <div v-for="tag in getDisplayableTagsForRepo(r.topics)" :key="tag.key" 
+            :class="['pill', 'topic', activeTopics.has(tag.key) && 'active']"
+            @click="toggleTopic(tag.key)"
+          >
+            {{ tag.label }}
           </div>
         </td>
       </tr>
@@ -206,6 +205,6 @@ function toggleSortDir() {
 .tag-filters__buttons { display: flex; flex-wrap: wrap; gap: 5px; }
 .count { white-space: nowrap; padding-top: 2px; }
 .topic { margin-bottom: 0; line-height: 1; }
-.topic.active { font-weight: bold; }
+.topic.active { font-weight: bold; filter: brightness(0.95); }
 .topic:hover { color: var(--vp-c-brand-1); }
 </style>
