@@ -6,6 +6,10 @@ on:
   push:
     branches: [master]
 
+  # Runs daily at midnight
+  schedule:
+    - cron: '0 0 * * *'
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -37,6 +41,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install Python dependencies
+        working-directory: docs/vitepress
+        run: "pip install -r requirements.txt"
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Install dependencies
@@ -45,6 +52,11 @@ jobs:
       - name: Update blogs
         working-directory: docs/vitepress
         run: python update_blogs.py
+      - name: Fetch trame repos
+        working-directory: docs/vitepress
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python fetch_repos.py
       - name: Build with VitePress
         working-directory: docs/vitepress
         run: |
@@ -53,6 +65,18 @@ jobs:
           mkdir -p .vitepress/dist/trame
           cp -rf .vitepress/dist/logos .vitepress/dist/trame/logos
           cp -rf .vitepress/dist/assets .vitepress/dist/trame/assets
+
+      - name: Download badges
+        working-directory: docs/vitepress/.vitepress/dist
+        run: |
+          mkdir -p downloads
+          curl -o ./downloads/trame.svg https://img.shields.io/pypi/dm/trame
+          curl -o ./downloads/trame-client.svg https://img.shields.io/pypi/dm/trame-client
+          curl -o ./downloads/trame-server.svg https://img.shields.io/pypi/dm/trame-server
+          curl -o ./downloads/trame-vuetify.svg https://img.shields.io/pypi/dm/trame-vuetify
+          curl -o ./downloads/trame-vtk.svg https://img.shields.io/pypi/dm/trame-vtk
+          curl -o ./downloads/trame-vtklocal.svg https://img.shields.io/pypi/dm/trame-vtklocal
+          curl -o ./downloads/trame-rca.svg https://img.shields.io/pypi/dm/trame-rca
       - name: Upload artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3
