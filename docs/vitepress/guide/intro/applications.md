@@ -12,7 +12,4 @@ const topics = {
 
 # Application catalog
 
-⚠️: Non Kitware-owned repository
-<br/>
-
 <RepoList filter-topic="trame-app" :displayable-topics="topics" />
