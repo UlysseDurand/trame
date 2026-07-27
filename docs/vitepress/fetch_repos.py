@@ -35,6 +35,7 @@ import os
 import json
 import re
 from datetime import datetime, timedelta, timezone
+import warnings
 import yaml
 
 
@@ -173,9 +174,15 @@ def fetch_gh_info(gh_repos):
     repos_data = retrieve_multiple_repos_graphql(gh_repos)
     json_repos_info = repos_data_to_json(repos_data)
 
-    fetched_repos_info = json_repos_info.copy()
+    fetched_repos_info = {}
     for url, repo_info in gh_repos.items():
-        fetched_repos_info[url] |= repo_info
+        try:
+            fetched_repos_info[url] = repo_info | json_repos_info[url]
+        except KeyError as e:
+            warnings.warn(
+                f"The fetched github repository has a different URL than the one provided. "
+                f"Check that the repository URL in `extrernal_repos.yml` isn't an alias: {e}."
+            )
     return fetched_repos_info
 
 
