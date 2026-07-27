@@ -178,7 +178,7 @@ function toggleSortDir() {
         </td>
         <td>
           <h4 class="repo-title">
-            <span v-if="!r.trusted" title="Non Kitware-owned">⚠️</span>
+            <span v-if="!r.trusted" title="Non Kitware-owned">🧑‍🤝‍🧑</span>
             <span v-if="r.createdWithinLastYear" title="Created within the last year">🆕</span>
             {{ r.name }}
           </h4>
@@ -186,11 +186,12 @@ function toggleSortDir() {
         </td>
         <td>
           <div v-for="tag in getDisplayableTagsForRepo(r.topics)" :key="tag.key">
-            <a :href="tag.key === '...' ? '' : 'https://github.com/topics/' + tag.githubTopic">
-              <span :class="['pill', 'topic', activeTopics.has(tag.key) && 'active']">
-                  {{ tag.label }}
-              </span>
-            </a>        
+            <span 
+              :class="['pill', 'topic', activeTopics.has(tag.key) && 'active']"
+              @click="toggleTopic(tag.key)"
+            >
+                {{ tag.label }}
+            </span>
           </div>
         </td>
       </tr>
