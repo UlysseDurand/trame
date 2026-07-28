@@ -5,9 +5,9 @@ https://github.com/kmarchais/mmgpy:
 https://github.com/dhruvhaldar/FOAMFlask:
   image: "https://github.com/dhruvhaldar/FOAMFlask/raw/dev_pyvista_ts_lkgc/Screenshots/geometry.png"
 
-https://github.com/MBradley1985/SAGE-Viewer:
+https://github.com/MBradley1985/ViSAGE:
   topics: [trame, trame-app]
-  image: "https://raw.githubusercontent.com/MBradley1985/SAGE-Viewer/main/docs/images/hero.png"
+  image: "https://raw.githubusercontent.com/MBradley1985/ViSAGE/main/docs/images/hero.png"
 
 https://github.com/jwindgassen/jupyter-trame-proxy:
   topics: [trame, trame-app, paraview]

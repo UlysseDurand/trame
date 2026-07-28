@@ -11,7 +11,4 @@ const topics = {
 
 # Widget catalog
 
-⚠️: Non Kitware-owned repository
-<br/>
-
 <RepoList filter-topic="trame-widget" :displayable-topics="topics" />
