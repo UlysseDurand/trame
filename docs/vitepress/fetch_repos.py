@@ -35,11 +35,33 @@ import os
 import json
 import re
 from datetime import datetime, timedelta, timezone
+import requests
 import warnings
+import time
 import yaml
+from pathlib import Path
 
 EXTERNAL_REPOS_FILE = "external_repos.yml"
 OUTPUT_FILE = "repos.json"
+IMAGES_DOWNLOAD_DIR = Path("public/repos_images")
+IMAGES_SERVE_SUFFIX = "/trame/repos_images"
+
+
+class ImageCacheMaker:
+    """Downloads remote images to make the page serve them itself"""
+
+    _img_id = 0
+
+    def __init__(self, download_dir: Path, serve_url_suffix_base: str):
+        """download_dir must be served at serve_url_suffix_base"""
+        self._download_dir = download_dir
+        self._serve_url_suffix_base = serve_url_suffix_base
+
+    def download(self, url: str):
+        download_remote_image(url, self._download_dir / f"{self._img_id}.png")
+        serve_url_suffix = f"{self._serve_url_suffix_base}/{self._img_id}.png"
+        self._img_id += 1
+        return serve_url_suffix
 
 
 def minify_graphql(query):
@@ -56,7 +78,7 @@ def make_gh_request(request: list[str]):
     result = subprocess.run(request, capture_output=True, text=True, env=os.environ)
     if result.returncode != 0:
         raise Exception(
-            f"Error executing command {' '.join(request)}:\n{result.stderr}"
+            f"Error executing command {' '.join(request)[:100]}:\n{result.stderr}\n{result.stdout}"
         )
     return result.stdout
 
@@ -83,6 +105,35 @@ def retrieve_gh_repos_from_topic(topic: str, owners: list = []):
             repos[t["url"]] = {"trusted": True}
         print(f"      Found {len(result)} repository/repositories for '{owner}'.")
     return repos
+
+
+def download_remote_image(remote_url: str, local_path: str, max_retries: int = 5):
+    for attempt in range(max_retries):
+        response = requests.get(remote_url)
+
+        if response.status_code == 200:
+            with open(local_path, "wb") as file:
+                file.write(response.content)
+                print(f"    Saved {local_path}")
+            return
+
+        if response.status_code == 429:  # Too many requests
+            retry_after = response.headers.get("Retry-After")
+            wait = float(retry_after) if retry_after else (2**attempt)
+            print(
+                f"      Rate limited fetching {remote_url}, retrying in {wait:.1f}s "
+                f"(attempt {attempt + 1}/{max_retries})..."
+            )
+            time.sleep(wait)
+            continue
+
+        raise Exception(
+            f"Failed to download {remote_url}, status code: {response.status_code}"
+        )
+
+    raise Exception(
+        f"Failed to download {remote_url} after {max_retries} retries (still rate limited)."
+    )
 
 
 def retrieve_repos_from_file(filename: str) -> list[str]:
@@ -169,7 +220,7 @@ def repos_data_to_json(repos_data):
         fetched_repos[url] = {
             "name": repo_data["name"],
             "description": repo_data["description"] or "",
-            "image": repo_data["openGraphImageUrl"],
+            "remoteImage": repo_data["openGraphImageUrl"],
             "topics": topics,
             "createdAt": repo_data["createdAt"],
             "lastCommitDate": last_commit_date,
@@ -197,6 +248,7 @@ def fetch_gh_info(gh_repos):
 
 
 def add_info(repos):
+    image_cache_maker = ImageCacheMaker(IMAGES_DOWNLOAD_DIR, IMAGES_SERVE_SUFFIX)
     one_year_ago = datetime.now(timezone.utc) - timedelta(days=365)
     for url, repo_info in repos.items():
         if not repo_info["trusted"]:
@@ -206,6 +258,8 @@ def add_info(repos):
             repo_info["createdAt"].replace("Z", "+00:00")
         )
         repo_info["createdWithinLastYear"] = created_at >= one_year_ago
+
+        repo_info["image"] = image_cache_maker.download(repo_info["remoteImage"])
 
 
 if __name__ == "__main__":
@@ -230,7 +284,9 @@ if __name__ == "__main__":
     print(f"- Fetching GraphQL metadata for {len(gh_repos)} GitHub repositories...")
     fetched_gh_repos = fetch_gh_info(gh_repos)
 
-    print("- Enriching repository information and calculating age...")
+    print(
+        "- Enriching repository information, downloading images and calculating age..."
+    )
     repos_w_info = non_gh_repos | fetched_gh_repos
     add_info(repos_w_info)
 
