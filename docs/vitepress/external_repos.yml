@@ -1,51 +1,51 @@
 https://github.com/kmarchais/mmgpy:
   topics: [trame, trame-app, vtk]
-  image: "https://github.com/kmarchais/mmgpy/raw/main/assets/mechanical_piece_remeshing.png"
+  remoteImage: "https://github.com/kmarchais/mmgpy/raw/main/assets/mechanical_piece_remeshing.png"
 
 https://github.com/dhruvhaldar/FOAMFlask:
-  image: "https://github.com/dhruvhaldar/FOAMFlask/raw/dev_pyvista_ts_lkgc/Screenshots/geometry.png"
+  remoteImage: "https://github.com/dhruvhaldar/FOAMFlask/raw/dev_pyvista_ts_lkgc/Screenshots/geometry.png"
 
 https://github.com/MBradley1985/ViSAGE:
   topics: [trame, trame-app]
-  image: "https://raw.githubusercontent.com/MBradley1985/ViSAGE/main/docs/images/hero.png"
+  remoteImage: "https://raw.githubusercontent.com/MBradley1985/ViSAGE/main/docs/images/hero.png"
 
 https://github.com/jwindgassen/jupyter-trame-proxy:
   topics: [trame, trame-app, paraview]
 
 https://github.com/utkarshayachit/simplified-batch:
   topics: [trame, trame-app, paraview]
-  image: https://raw.githubusercontent.com/utkarshayachit/simplified-batch/refs/heads/main/images/trame.gif
+  remoteImage: https://raw.githubusercontent.com/utkarshayachit/simplified-batch/refs/heads/main/images/trame.gif
 
 https://github.com/vicentebolea/virtual-thermostat:
   topics: [trame, trame-app]
 
 https://github.com/linson7017/pymipf:
   topics: [trame, trame-app, vtk]
-  image: "https://github.com/linson7017/pymipf/raw/master/imgs/multi_view.png"
+  remoteImage: "https://github.com/linson7017/pymipf/raw/master/imgs/multi_view.png"
 
 https://github.com/ndminhvn/interactive-population-visualization:
   topics: [trame, trame-app, vtk]
 
 https://github.com/Chahat08/BioSET_Visualizer:
   topics: [trame, trame-app, vtk]
-  image: https://raw.githubusercontent.com/Chahat08/BioSET_Visualizer/master/src/bioset/ui/assets/icon.jpg
+  remoteImage: https://raw.githubusercontent.com/Chahat08/BioSET_Visualizer/master/src/bioset/ui/assets/icon.jpg
 
 # https://github.com/jph6366/trame-aoc:
 #   topics: [trame, trame-app]
 
 https://github.com/brendanjmeade/fennil:
   topics: [trame, trame-app, py-deck]
-  image: "https://raw.githubusercontent.com/brendanjmeade/fennil/main/fennil.jpg"
+  remoteImage: "https://raw.githubusercontent.com/brendanjmeade/fennil/main/fennil.jpg"
   trusted: true
 
 https://github.com/brendanjmeade/parsli:
   topics: [trame, trame-app, vtk]
-  image: "https://raw.githubusercontent.com/brendanjmeade/parsli/refs/heads/main/parsli.png"
+  remoteImage: "https://raw.githubusercontent.com/brendanjmeade/parsli/refs/heads/main/parsli.png"
   trusted: true
 
 https://github.com/XAITK/xaitk-saliency-web-demo:
   topics: [trame, trame-app]
-  image: "https://raw.githubusercontent.com/XAITK/xaitk-saliency-web-demo/refs/heads/master/gallery/xaitk.png"
+  remoteImage: "https://raw.githubusercontent.com/XAITK/xaitk-saliency-web-demo/refs/heads/master/gallery/xaitk.png"
   trusted: true
 
 https://github.com/festim-dev/festim-gui:
@@ -54,17 +54,17 @@ https://github.com/festim-dev/festim-gui:
 
 https://github.com/cardinalgeo/drilldown:
   topics: [trame, trame-app, vtk]
-  image: "https://github.com/cardinalgeo/drilldown/raw/main/media/poster.jpg"
+  remoteImage: "https://github.com/cardinalgeo/drilldown/raw/main/media/poster.jpg"
 
 https://github.com/MXJK851/SpinView:
   topics: [trame, trame-app]
-  image: "https://github.com/MXJK851/SpinView/raw/main/docs/assets/readme.png"
+  remoteImage: "https://github.com/MXJK851/SpinView/raw/main/docs/assets/readme.png"
 
 https://gitlab.kitware.com/keu-public/trame-catalyst-demo:
   topics: [trame, trame-app, paraview]
   nameWithOwner: "keu-public/trame-catalyst-demo"
   name: "trame-catalyst-demo"
-  image: "https://gitlab.kitware.com/keu-public/trame-catalyst-demo/-/raw/main/screenshot.png"
+  remoteImage: "https://gitlab.kitware.com/keu-public/trame-catalyst-demo/-/raw/main/screenshot.png"
   commitCount: 10
   createdAt: "2026-05-07T00:00:00Z"
   description: "A trame application for Catalyst live visualization."
@@ -75,5 +75,5 @@ https://gitlab.kitware.com/keu-public/trame-catalyst-demo:
 
 https://github.com/epicsuite/episcope:
   topics: [trame, trame-app, paraview]
-  image: https://raw.githubusercontent.com/epicsuite/episcope/refs/heads/main/doc/img/selection.gif
+  remoteImage: https://raw.githubusercontent.com/epicsuite/episcope/refs/heads/main/doc/img/selection.gif
   trusted: true

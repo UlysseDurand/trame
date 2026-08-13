@@ -73,10 +73,32 @@ jobs:
           curl -o ./downloads/trame.svg https://img.shields.io/pypi/dm/trame
           curl -o ./downloads/trame-client.svg https://img.shields.io/pypi/dm/trame-client
           curl -o ./downloads/trame-server.svg https://img.shields.io/pypi/dm/trame-server
+          curl -o ./downloads/trame-common.svg https://img.shields.io/pypi/dm/trame-common
           curl -o ./downloads/trame-vuetify.svg https://img.shields.io/pypi/dm/trame-vuetify
-          curl -o ./downloads/trame-vtk.svg https://img.shields.io/pypi/dm/trame-vtk
           curl -o ./downloads/trame-vtklocal.svg https://img.shields.io/pypi/dm/trame-vtklocal
           curl -o ./downloads/trame-rca.svg https://img.shields.io/pypi/dm/trame-rca
+          curl -o ./downloads/trame-vtk.svg https://img.shields.io/pypi/dm/trame-vtk
+          curl -o ./downloads/trame-slicer.svg https://img.shields.io/pypi/dm/trame-slicer
+          curl -o ./downloads/trame-tauri.svg https://img.shields.io/pypi/dm/trame-tauri
+          curl -o ./downloads/trame-simput.svg https://img.shields.io/pypi/dm/trame-simput
+          curl -o ./downloads/trame-datagrid.svg https://img.shields.io/pypi/dm/trame-datagrid
+          curl -o ./downloads/trame-code.svg https://img.shields.io/pypi/dm/trame-code
+          curl -o ./downloads/trame-matplotlib.svg https://img.shields.io/pypi/dm/trame-matplotlib
+          curl -o ./downloads/trame-quasar.svg https://img.shields.io/pypi/dm/trame-quasar
+          curl -o ./downloads/trame-image-tools.svg https://img.shields.io/pypi/dm/trame-image-tools
+          curl -o ./downloads/trame-plotly.svg https://img.shields.io/pypi/dm/trame-plotly
+          curl -o ./downloads/trame-iframe.svg https://img.shields.io/pypi/dm/trame-iframe
+          curl -o ./downloads/trame-leaflet.svg https://img.shields.io/pypi/dm/trame-leaflet
+          curl -o ./downloads/trame-vega.svg https://img.shields.io/pypi/dm/trame-vega
+          curl -o ./downloads/trame-components.svg https://img.shields.io/pypi/dm/trame-components
+          curl -o ./downloads/trame-deckgl.svg https://img.shields.io/pypi/dm/trame-deckgl
+          curl -o ./downloads/trame-router.svg https://img.shields.io/pypi/dm/trame-router
+          curl -o ./downloads/trame-markdown.svg https://img.shields.io/pypi/dm/trame-markdown
+          curl -o ./downloads/trame-dataclass.svg https://img.shields.io/pypi/dm/trame-dataclass
+          curl -o ./downloads/trame-xterm.svg https://img.shields.io/pypi/dm/trame-xterm
+          curl -o ./downloads/trame-radial-menu.svg https://img.shields.io/pypi/dm/trame-radial-menu
+          curl -o ./downloads/trame-colormaps.svg https://img.shields.io/pypi/dm/trame-colormaps
+          curl -o ./downloads/trame-dockview.svg https://img.shields.io/pypi/dm/trame-dockview
       - name: Upload artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3
