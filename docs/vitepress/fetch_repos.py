@@ -37,6 +37,7 @@ import re
 from datetime import datetime, timedelta, timezone
 import requests
 import time
+import warnings
 import yaml
 from pathlib import Path
 
@@ -44,6 +45,16 @@ EXTERNAL_REPOS_FILE = "external_repos.yml"
 OUTPUT_FILE = "repos.json"
 IMAGES_DOWNLOAD_DIR = Path("public/repos_images")
 IMAGES_SERVE_SUFFIX = "/trame/repos_images"
+
+
+def github_action_formatwarning(message, category, filename, lineno, line=None):
+    # Escape any colons or commas in the message
+    safe_message = str(message).replace(":", "%3A").replace(",", "%2C")
+
+    return f"::warning file={filename},line={lineno},title={category.__name__}::{safe_message}\n"
+
+
+warnings.formatwarning = github_action_formatwarning
 
 
 class ImageCacheMaker:
@@ -192,11 +203,11 @@ def retrieve_multiple_repos_graphql(repos: dict):
     try:
         data = json.loads(make_gh_request(cmd))["data"]
     except Exception as e:
-        print(f"::warning::GraphQL request failed: {e}")
+        warnings.warn(f"GraphQL request failed: {e}")
         return {}
     missing = [alias for alias, info in data.items() if info is None]
     for alias in missing:
-        print(f"::warning::Skipping missing repo: {alias} (not found on GitHub)")
+        warnings.warn(f"Skipping missing repo: {alias} (not found on GitHub)")
     return {alias: info for alias, info in data.items() if info is not None}
 
 
@@ -220,7 +231,7 @@ def repos_data_to_json(repos_data):
             if history.get("nodes"):
                 last_commit_date = history["nodes"][0]["committedDate"]
         else:
-            print(f"::warning::{url} has no default branch. Is it empty ?")
+            warnings.warn(f"{url} has no default branch. Is it empty ?")
             continue
 
         fetched_repos[url] = {
@@ -246,10 +257,9 @@ def fetch_gh_info(gh_repos):
         if url in json_repos_info:
             fetched_repos_info[url] = json_repos_info[url] | repo_info
         else:
-            print(
-                f"::warning::The fetched github repository has a different URL than the one "
-                f"provided. Check that the repository URL in `extrernal_repos.yml` isn't an alias: "
-                f"{url}."
+            warnings.warn(
+                f"The fetched github repository has a different URL than the one provided. Check "
+                f"that the repository URL in `extrernal_repos.yml` isn't an alias: {url}."
             )
     return fetched_repos_info
 
