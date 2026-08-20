@@ -36,7 +36,6 @@ import json
 import re
 from datetime import datetime, timedelta, timezone
 import requests
-import warnings
 import time
 import yaml
 from pathlib import Path
@@ -159,7 +158,7 @@ def retrieve_multiple_repos_graphql(repos: dict):
                 openGraphImageUrl
                 createdAt
                 stargazerCount
-                repositoryTopics(first: 10) {{
+                repositoryTopics(first: 100) {{
                     nodes {{
                         topic {{
                             name
@@ -190,8 +189,15 @@ def retrieve_multiple_repos_graphql(repos: dict):
     """.strip()
     mini_query = minify_graphql(query)
     cmd = ["gh", "api", "graphql", "-f", f"query={mini_query}"]
-    data = json.loads(make_gh_request(cmd))["data"]
-    return data
+    try:
+        data = json.loads(make_gh_request(cmd))["data"]
+    except Exception as e:
+        print(f"::warning::GraphQL request failed: {e}")
+        return {}
+    missing = [alias for alias, info in data.items() if info is None]
+    for alias in missing:
+        print(f"::warning::Skipping missing repo: {alias} (not found on GitHub)")
+    return {alias: info for alias, info in data.items() if info is not None}
 
 
 def is_gh_url(url):
@@ -214,7 +220,7 @@ def repos_data_to_json(repos_data):
             if history.get("nodes"):
                 last_commit_date = history["nodes"][0]["committedDate"]
         else:
-            warnings.warn(f"{url} has no default branch. Is it empty ?")
+            print(f"::warning::{url} has no default branch. Is it empty ?")
             continue
 
         fetched_repos[url] = {
@@ -240,9 +246,10 @@ def fetch_gh_info(gh_repos):
         if url in json_repos_info:
             fetched_repos_info[url] = json_repos_info[url] | repo_info
         else:
-            warnings.warn(
-                f"The fetched github repository has a different URL than the one provided. "
-                f"Check that the repository URL in `extrernal_repos.yml` isn't an alias: {url}."
+            print(
+                f"::warning::The fetched github repository has a different URL than the one "
+                f"provided. Check that the repository URL in `extrernal_repos.yml` isn't an alias: "
+                f"{url}."
             )
     return fetched_repos_info
 
